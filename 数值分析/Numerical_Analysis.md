@@ -75,20 +75,22 @@ $$
 ## 函数方程数值解法：
 #### 二分法：
 #### 迭代法：
-#### AitkenAitken迭代法：
-#### NewtonNewton切线法：
+#### Aitken迭代法：
+#### Newton切线法：
 #### 弦截法：
 #### 抛物线法：
 
 
 ## 常微分方程数值解法
-#### 一阶微分方程的 LipschitzLipschitz条件：
-#### 一阶微分方程的EulerEuler解法：
-#### 一阶微分方程的TaylorTaylor解法：
-#### 一阶微分方程的Runge-KuttaRunge−Kutta解法：
-#### 一阶微分方程的AdamsAdams解法：
-#### 一阶微分方程的MilneMilne解法 / SimpsonSimpson解法：
-####  一阶微分方程的HammingHamming解法：
+#### Lipschitz条件：
+对于一阶微分方程的初值问题: $\mathrm{y}^{\prime}=\mathrm{f}(\mathrm{x}, \mathrm{y}), \mathrm{y}\left(\mathrm{x}_0\right)=\mathrm{y}_0$ ，若函数 $\mathrm{f}(\mathrm{x}, \mathrm{y})$ 满足: $\left|\mathrm{f}\left(\mathrm{x}, \mathrm{y}_1\right)-\mathrm{f}\left(\mathrm{x}, \mathrm{y}_2\right)\right| \leq \mathrm{L}\left|\mathrm{y}_1-\mathrm{y}_2\right|$ 的Lipschitz条件， 则该问题存在唯一解 $\mathrm{y}=\mathrm{y}(\mathrm{x})$
+
+#### Euler解法：
+#### Taylor解法：
+#### Runge−Kutta解法：
+#### Adams解法：
+#### Milne解法Simpson解法：
+####  Hamming解法：
 #### 边值问题的差分解法：
 
 
@@ -193,12 +195,12 @@ $$
 #### 常用向量范数：
 #### 常用矩阵范数：
 #### 矩阵条件数：
-#### GaussGauss消去法：
-#### 矩阵谱半径 / 迭代法收敛定理：
+#### Gauss消去法：
+#### 矩阵谱半径/迭代法收敛定理：
 
-#### JacobiJacobi迭代法：
+#### Jacobi迭代法：
 
-#### Gauss-SeidelGauss−Seidel迭代法：
+#### Gauss−Seidel迭代法：
 
 #### 超松弛迭代法：
 
@@ -207,3 +209,4 @@ $$
 **参考资料：**
 
 1. [快速掌握A=LU分解及应用](https://www.bilibili.com/video/BV1r84y1F7qC?spm_id_from=333.337.search-card.all.click&vd_source=1a163e481fb12c5b6ca8a57f994c1d73)
+2. [常微分方程数值解法](https://blog.csdn.net/qq_44820158/article/details/108259616)
