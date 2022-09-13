@@ -66,10 +66,10 @@ $$
 
 ## 数值积分和数值微分
 #### 数值积分相关概念：
-#### Newton-CotesNewton−Cotes公式：
+#### Newton−Cotes公式：
 #### 复化求积法：
-#### RombergRomberg公式RichardsonRichardson外推加速法：
-#### Gauss-LegendreGauss−Legendre公式：
+#### Richardson外推加速法：
+#### Gauss−Legendre公式：
 #### 数值微分常用方法:
 
 ## 函数方程数值解法：
