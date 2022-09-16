@@ -1,8 +1,21 @@
-# 数值分析笔记
+# 数值分析
 记录数值分析学习笔记，此过程持续更新，逐步填坑中。。。
 
-## 误差分析
+### Prerequisite
+##### 带着问题去学习：
+求解方程组有很多方法，需要了解这些工具的“技术指标”来决定什么时候用什么方法。这些技术指标，比方说它们适用的矩阵有什么要求？它们需要的计算量各是多少？它们需要的存储量各是多少？它们对于大规模问题的表现怎么样？计算误差有多大？有没有什么特殊情况是它们特别适用或是特别不适用的？有没有进一步的手段改善它们的表现？ 总的来说一个方程组解的好不好，取决于选用的方法和问题本身！
+**Cons VS Pros：**（todo...）
+1. 高斯消去法：
+2. Cholesky分解法:
+3. QR分解法:
+4. Jacobi迭代法:
+5. Gauss-Seidel迭代法:
+6. 共轭梯度法:
 
+##### 方法论：
+数值分析许多章节之间并没有特别紧密的联系，所以学习的时候可以铺开，发散思维。 对不同的章节, 各学各的，分别独立击破。
+
+## 1.误差分析
 #### 误差分析相关概念：
 |概念|释义|性质|
 |:--- | :---| :---|
@@ -38,22 +51,16 @@ $$
 
 
 
-## 函数插值
-
+## 2. 函数插值与逼近
+核心思想： 用多项式来做拟合函数
+### 插值方法：
 (根据 某末知函数 $\mathrm{f}(\mathrm{x})$ 一系列的观测点 $\left(\mathrm{x}_{\mathrm{i}}, \mathrm{y}_{\mathrm{i}}\right)$ 求出既能反映 $\mathrm{f}(\mathrm{x})$ 的特性、又便于计算的简单的函数 $\mathrm{P}(\mathrm{x})$ (如代数多项式函数) 使得 $\mathrm{P}\left(\mathrm{x}_{\mathrm{i}}\right)=\mathrm{y}_{\mathrm{i}}$ ，以便近似求出/预判其他一些末观测的函数值)
-
-### Lagrange插值法
-
-### Aitken逐次线性插值法
-
-### Newton插值法
-
-### Hermite插值法
-
-### 三次样条插值法
-
-
-## 函数逼近：
+#### Lagrange插值法
+#### Aitken逐次线性插值法
+#### Newton插值法
+#### Hermite插值法
+#### 三次样条插值法
+### 逼近方法：
 
 #### 函数逼近相关概念：
 #### 常用正交多项式：
@@ -64,7 +71,36 @@ $$
 #### 曲线拟合的最小二乘法：
 
 
-## 数值积分和数值微分
+## 3. 数值积分和数值微分
+用有限去接近无限：数值微分就是差分和差商， 数值积分就是求和。
+
+#### 有限差分法：
+有限差分法基本概念
+一、差商与微商
+有限差分的数学基础是用差商代替微商。
+有如下两种数学形式:
+微商（导数）的定义
+若 $T(x)$ 是连续函数, 则它的导数为:
+$$
+\frac{d T}{d x}=\lim _{\Delta x \rightarrow 0} \frac{T(x+\Delta x)-T(x)}{\Delta x}=\lim _{\Delta x \rightarrow 0} \frac{\Delta T}{\Delta x}
+$$
+右边 $\frac{\Delta T}{\Delta x}$ 是有限的差商。
+
+可以参考文章[微分方程数值求解——有限差分法](https://zhuanlan.zhihu.com/p/411798670)
+
+**二阶差分公式推导：**
+对连续函数 $f(x)$ 以间隔 $\Delta x$ 进行空间离散, 则 $f(x)$ 的前后两 个采样值 $f(x \pm \Delta x)$ 在 $x$ 点处的泰勒级数展开式为
+$$
+f(x \pm \Delta x)=f(x) \pm \Delta x f^{\prime}(x)+\frac{(\Delta x)^2}{2} f^{\prime \prime}(x) \pm \frac{(\Delta x)^3}{6} f^{\prime \prime \prime}(x)+O\left((\Delta x)^3\right)
+$$
+将上式中带正负号的两个泰勒级数展开式相加,并经过整理可获取二阶导数的差分格式：
+$$
+\begin{aligned}
+f^{\prime \prime}(x) &=\frac{f(x+\Delta x)-2 f(x)+f(x-\Delta x)}{(\Delta x)^2}-O\left((\Delta x)^2\right) \\
+& \approx \frac{f(x+\Delta x)-2 f(x)+f(x-\Delta x)}{(\Delta x)^2}
+\end{aligned}
+$$
+
 #### 数值积分相关概念：
 #### Newton−Cotes公式：
 #### 复化求积法：
@@ -72,7 +108,15 @@ $$
 #### Gauss−Legendre公式：
 #### 数值微分常用方法:
 
-## 函数方程数值解法：
+## 4. (非线性) 方程求根：
+求解函数方程 $\mathrm{f}(\mathrm{x})=0, \mathrm{x} \in[\mathrm{a}, \mathrm{b}]$ 的根 $\mathrm{x}^*$ 的近似值 $\mathrm{x}$ ，使得误差 $\left|\mathrm{x}^*-\mathrm{x}\right|<\varepsilon$ ，其中 $\varepsilon$ 为预定的精度
+
+**核心思想：**
+
+迭代法的最简单应用， 以牛顿法为核心去理解所有问题。 
+* 一阶可导：牛顿法（切线法）
+* 一阶不可导：拟牛顿法（割线法、弦截法）
+
 #### 二分法：
 #### 迭代法：
 #### Aitken迭代法：
@@ -81,25 +125,8 @@ $$
 #### 抛物线法：
 
 
-## 常微分方程数值解法
-#### Lipschitz条件：
-对于一阶微分方程的初值问题: $\mathrm{y}^{\prime}=\mathrm{f}(\mathrm{x}, \mathrm{y}), \mathrm{y}\left(\mathrm{x}_0\right)=\mathrm{y}_0$ ，若函数 $\mathrm{f}(\mathrm{x}, \mathrm{y})$ 满足: $\left|\mathrm{f}\left(\mathrm{x}, \mathrm{y}_1\right)-\mathrm{f}\left(\mathrm{x}, \mathrm{y}_2\right)\right| \leq \mathrm{L}\left|\mathrm{y}_1-\mathrm{y}_2\right|$ 的Lipschitz条件， 则该问题存在唯一解 $\mathrm{y}=\mathrm{y}(\mathrm{x})$
 
-#### Euler解法：
-#### Taylor解法：
-#### Runge−Kutta解法：
-#### Adams解法：
-#### Milne解法Simpson解法：
-####  Hamming解法：
-#### 边值问题的差分解法：
-
-
-
-
-
-
-
-## 线性方程组数值解法
+## 5. 线性方程组数值解法
 许多数值问题都可以转化为求解线性问题：
 $$\mathbf{Ax = b}\\$$
 
@@ -197,12 +224,23 @@ $$
 #### 矩阵条件数：
 #### Gauss消去法：
 #### 矩阵谱半径/迭代法收敛定理：
-
 #### Jacobi迭代法：
-
 #### Gauss−Seidel迭代法：
-
 #### 超松弛迭代法：
+
+
+
+## 6. 常微分方程数值解法
+#### Lipschitz条件：
+对于一阶微分方程的初值问题: $\mathrm{y}^{\prime}=\mathrm{f}(\mathrm{x}, \mathrm{y}), \mathrm{y}\left(\mathrm{x}_0\right)=\mathrm{y}_0$ ，若函数 $\mathrm{f}(\mathrm{x}, \mathrm{y})$ 满足: $\left|\mathrm{f}\left(\mathrm{x}, \mathrm{y}_1\right)-\mathrm{f}\left(\mathrm{x}, \mathrm{y}_2\right)\right| \leq \mathrm{L}\left|\mathrm{y}_1-\mathrm{y}_2\right|$ 的Lipschitz条件， 则该问题存在唯一解 $\mathrm{y}=\mathrm{y}(\mathrm{x})$
+
+#### Euler解法：
+#### Taylor解法：
+#### Runge−Kutta解法：
+#### Adams解法：
+#### Milne解法Simpson解法：
+####  Hamming解法：
+#### 边值问题的差分解法：
 
 
 
@@ -210,3 +248,5 @@ $$
 
 1. [快速掌握A=LU分解及应用](https://www.bilibili.com/video/BV1r84y1F7qC?spm_id_from=333.337.search-card.all.click&vd_source=1a163e481fb12c5b6ca8a57f994c1d73)
 2. [常微分方程数值解法](https://blog.csdn.net/qq_44820158/article/details/108259616)
+3. [微分方程数值求解——有限差分法](https://zhuanlan.zhihu.com/p/411798670)
+4. [二阶中心差分格式](http://www.tup.tsinghua.edu.cn/upload/books/yz/085948-01.pdf)
