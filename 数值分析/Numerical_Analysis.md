@@ -66,8 +66,8 @@ $$
 #### 常用正交多项式：
 #### 函数族线性无关的CramerCramer判别法：
 #### 法方程法求最佳平方逼近函数 / 多项式：
-#### 广义FourierFourier级数求最佳平方逼近多项式：
-#### FourierFourier级数求最佳平方逼近三角多项式：
+#### 广义Fourier级数求最佳平方逼近多项式：
+#### Fourier级数求最佳平方逼近三角多项式：
 #### 曲线拟合的最小二乘法：
 
 
@@ -101,8 +101,66 @@ f^{\prime \prime}(x) &=\frac{f(x+\Delta x)-2 f(x)+f(x-\Delta x)}{(\Delta x)^2}-O
 \end{aligned}
 $$
 
-#### 数值积分相关概念：
+### 数值积分相关概念：
+#### 提出问题
+如何计算 $\int_a^b f(x) d x=\lim _{\lambda \rightarrow 0} \sum_{j=0}^n f\left(x_j\right) \Delta x_j$ 定积分？
+微积分基本定理 ：
+$$
+\int_a^b f(x) d x=F(b)-F(a)
+$$
+如果⽆法找到原函数或者原函数过于复杂不适合数值计算，怎么办？
+* 定积分本质是⼀个具体的数
+* ⽬标是找到这个数的近似值，精度越⾼越好，代价越⼩越好！
+
+#### 数值积分的方法
+- 积分中值定理:
+$$
+\int_a^b f(x) d x=f(\xi)(b-a)
+$$
+- 近似被积函数
+$$
+\int_a^b f(x) d x \approx \int_a^b p(x) d x
+$$
+- 积分的区域可加性: 复化求积分公式
+$$
+\int_a^b f(x) d x=\int_a^c f(x) d x+\int_c^b f(x) d x=\ldots
+$$
+- 进⼀步提⾼效率：⾃适应求积分
+
+##### 积分中值定理
+**矩形公式：**  左矩形，右矩形公式，中点公式，梯形公式
+$$
+\begin{array}{rlr}
+\int_a^b f(x) d x & =f(\xi)(b-a) & \\
+& \approx f(a)(b-a) & \text { 左矩形 } \\
+& \approx f(b)(b-a) & \text { 右矩形 } \\
+& \approx f\left(\frac{a+b}{2}\right)(b-a) & \text { 中矩形 } \\
+& \approx \frac{f(a)+f(b)}{2}(b-a) &  \text { 梯形公式 } \\
+\end{array}
+$$
+
+**梯形公式的截断误差：**
+利用Taylor展开推导：
+$$
+E_T=\int_a^b f(x) d x-\frac{f(a)+f(b)}{2}(b-a)=\int_a^b\left[f(x)-\frac{f(a)+f(b)}{2}\right] d x
+$$
+Hint:
+$$
+\begin{aligned}
+f(x) &=f(a)+f^{\prime}(a)(x-a)+f^{\prime \prime}\left(\xi_1\right)(x-a)^2 \\
+f(x) &=f(b)+f^{\prime}(b)(x-b)+f^{\prime \prime}\left(\xi_2\right)(x-b)^2 \\
+E_T &=\int_a^b \frac{1}{2}\left[f^{\prime}(a)(x-a)+f^{\prime}(b)(x-b)+f^{\prime \prime}\left(\xi_1\right)(x-a)^2+f^{\prime \prime}\left(\xi_2\right)(x-b)^2\right] d s \\
+&=\frac{1}{2}\left[\left(f^{\prime}(a)-f^{\prime}(b)\right) \frac{(b-a)^2}{2}+\mathrm{(f^{\prime\prime}(\xi_1) - f^{\prime\prime}(\xi_2))} * \frac{(b-a)^3}{3}\right] \\
+&=\mathrm{( (f^{\prime\prime}(\xi_1) - f^{\prime\prime}(\xi_2)) -  f^{\prime\prime}(\xi_3) )} * \frac{(b-a)^3}{-12}\\
+&= -\frac{f^{\prime \prime}(\eta)}{12}(b-a)^3 \\
+\end{aligned}\\
+$$
+> Note: 
+> * $\mathrm{C}_2$ 与二阶导数相关。
+
 #### Newton−Cotes公式：
+
+
 #### 复化求积法：
 #### Richardson外推加速法：
 #### Gauss−Legendre公式：
@@ -130,7 +188,7 @@ $$
 许多数值问题都可以转化为求解线性问题：
 $$\mathbf{Ax = b}\\$$
 
-计算 $\mathbf{A^-1}$的成本很高，尤其是在$\mathbf{A}$大且稀疏的情况下。 所以我们不能简单地做:$\mathbf{x = A^{-1}}$
+计算 $\mathbf{A^-1}$的成本很高，尤其是在$\mathbf{A}$大且稀疏的情况下。 所以不能简单地做:$\mathbf{x = A^{-1}}$
 
 #### LU分解法：
 $\bf{LU}$分解定理：若 $\mathbf{A}$ 的各阶顺序主子式 $\mathbf{D}_{\mathbf{k}} \equiv 0$ ，则 $\mathbf{A}$ 可唯一分解为一个单位下三角矩阵 $\mathbf{L}$ 和一个上 三角矩阵$\mathbf{U}$的乘积的形式，即： $\bf{A=L U}$ 
@@ -229,7 +287,6 @@ $$
 #### 超松弛迭代法：
 
 
-
 ## 6. 常微分方程数值解法
 #### Lipschitz条件：
 对于一阶微分方程的初值问题: $\mathrm{y}^{\prime}=\mathrm{f}(\mathrm{x}, \mathrm{y}), \mathrm{y}\left(\mathrm{x}_0\right)=\mathrm{y}_0$ ，若函数 $\mathrm{f}(\mathrm{x}, \mathrm{y})$ 满足: $\left|\mathrm{f}\left(\mathrm{x}, \mathrm{y}_1\right)-\mathrm{f}\left(\mathrm{x}, \mathrm{y}_2\right)\right| \leq \mathrm{L}\left|\mathrm{y}_1-\mathrm{y}_2\right|$ 的Lipschitz条件， 则该问题存在唯一解 $\mathrm{y}=\mathrm{y}(\mathrm{x})$
@@ -250,3 +307,4 @@ $$
 2. [常微分方程数值解法](https://blog.csdn.net/qq_44820158/article/details/108259616)
 3. [微分方程数值求解——有限差分法](https://zhuanlan.zhihu.com/p/411798670)
 4. [二阶中心差分格式](http://www.tup.tsinghua.edu.cn/upload/books/yz/085948-01.pdf)
+5. [李庆扬，《数值分析》，清华大学出版社]()
