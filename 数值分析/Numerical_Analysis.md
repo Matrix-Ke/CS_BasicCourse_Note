@@ -52,12 +52,141 @@ $$
 
 
 ## 2. 函数插值与逼近
-核心思想： 用多项式来做拟合函数
+核心思想： 
+* 用多项式来做拟合函数
+* 根据某末知函数 $\mathrm{f}(\mathrm{x})$ 一系列的观测点 $\left(\mathrm{x}_{\mathrm{i}}, \mathrm{y}_{\mathrm{i}}\right)$ 求出既能反映 $\mathrm{f}(\mathrm{x})$ 的特性、又便于计算的简单的函数 $\mathrm{P}(\mathrm{x})$ (如代数多项式函数) 使得 $\mathrm{P}\left(\mathrm{x}_{\mathrm{i}}\right)=\mathrm{y}_{\mathrm{i}}$ ，以便近似求出/预判其他一些末观测的函数值。
+
+### 问题提出
+
+在某个区间 $[a, b]$ 上给出一系列函数点值
+$$
+y_j=f\left(x_j\right), \quad 0 \leq j \leq n
+$$如何得到定义在整个区间 $[a, b]$ 上的一个光滑函数?
+
+#### 插值法基本原理
+设函数 $y=f(x)$ 定义在区间 $[a, b]$ 上, $x_0, x_1, \cdots, x_n$ 是 $[a, b]$ 上取定的 $\mathrm{n}+1$ 个互异节 点, 且已知节点处的函数值 $f\left(x_0\right), f\left(x_1\right), \cdots, f\left(x_n\right)$; 若存函数 $\phi(x)$, 满足
+$$
+\phi\left(x_i\right)=f\left(x_i\right), \quad i=0,1,2, \cdots, n \\
+$$
+则称 $\phi$ 为 $f(x)$ 的一个揷值函数, $f(x)$ 为被揷函数, 点 $x_i$ 为揷值节点, 上式为揷值条 件, 而误差函数 $R(x)=f(x)-\phi(x)$ 称**插值值余项。**
+
+从计算方便和理论分析的角度出发, 我们选择多项式。也即是：对 $n+1$ 个揷值 节点选择 $\mathrm{n}$ 次多项式作为揷值函数。
+$$
+P_n(x)=\sum_{j=0}^n a_j x^j \\
+$$
+
+**引入问题：**
+* （1）多项式P(x) 是否存在唯⼀？
+  * 不能解决，除非限定条件。
+* （2）若存在唯⼀，如何求P(x)？
+$$
+\begin{align*}
+  \sum_{j=0}^n a_j\left(x_k\right)^j &=y_k, \quad 0 \leq k \leq n \\
+  \begin{bmatrix}
+    x_0^0 & x_0^1 & \cdots & x_0^n \\
+    x_1^0 & x_1^1 & \cdots & x_1^n \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_n^0 & x_n^1 & \cdots & x_n^n \\
+  \end{bmatrix} \begin{bmatrix}
+    a_0 \\ a_1 \\ \vdots \\ a_n \\
+  \end{bmatrix}  &= \begin{bmatrix}
+    y_0 \\ y_1 \\ \vdots \\ y_n \\
+  \end{bmatrix}\\
+\end{align*} \\
+$$
+观察发现: 上式是关于系数 $a_j$ 的线性方程组, 且系数矩阵很特殊.(范德蒙行列式)
+* $D_n=\prod_{1 \leq j<i \leq n}\left(x_i-x_j\right)$
+* 只要是互异节点，矩阵可逆，存在唯一解。
 ### 插值方法：
-(根据 某末知函数 $\mathrm{f}(\mathrm{x})$ 一系列的观测点 $\left(\mathrm{x}_{\mathrm{i}}, \mathrm{y}_{\mathrm{i}}\right)$ 求出既能反映 $\mathrm{f}(\mathrm{x})$ 的特性、又便于计算的简单的函数 $\mathrm{P}(\mathrm{x})$ (如代数多项式函数) 使得 $\mathrm{P}\left(\mathrm{x}_{\mathrm{i}}\right)=\mathrm{y}_{\mathrm{i}}$ ，以便近似求出/预判其他一些末观测的函数值)
 #### Lagrange插值法
-#### Aitken逐次线性插值法
+已知两点函数值
+$$
+y_0=f\left(x_0\right) ; \quad y_1=f\left(x_1\right) \\
+$$
+构造一次多项式满足揷值条件。
+解: 设 $P_1(x)=a x+b$ 利用插值条件得到方程组：
+$$
+a x_0+b=y_0 ; \quad a x_1+b=y_1 \\
+$$
+解得斜率, 进而得到点斜式
+$$
+P_1(x)=y_0+\frac{y_1-y_0}{x_1-x_0}\left(x-x_0\right) \\
+$$
+更改形式为
+$$
+P_1(x)=\frac{x-x_1}{x_0-x_1} y_0+\frac{x-x_0}{x_1-x_0} y_1:=y_0 * l_0(x)+y_1 * l_1(x)
+$$
+* P(x) 是 l0(x) 和 l1(x) 的线性组合，系数是网格上的函数值，两个线性函数 l0(x) 和 l1(x) 满足 Kronecker delta： 
+$$
+l_i\left(x_j\right)=\delta_{i j}= \begin{cases}1, & i=j \\ 0 & i \neq j\end{cases}  \\
+$$
+
+**综上所述：**
+已知:
+$$
+y_j=f\left(x_j\right), \quad j=0,1,2, \ldots, n
+$$
+输出:
+$$
+P_n(x)=y_0 l_0(x)+y_1 l_1(x)+\ldots+y_n l_n(x)
+$$
+其中
+$$
+\begin{gathered}
+l_j(x)=\frac{\left(x-x_0\right) \ldots\left(x-x_{j-1}\right)\left(x-x_{j+1}\right) \ldots\left(x-x_n\right)}{\left(x_j-x_0\right) \ldots\left(x_j-x_{j-1}\right)\left(x_j-x_{j+1}\right) \ldots\left(x_j-x_n\right)} \\
+=\frac{\prod_{l=0, l \neq j}^n\left(x-x_l\right)}{\prod_{l=0, l \neq j}^n\left(x_j-x_l\right)}
+\end{gathered} \\
+$$
+
+#### 插值余项
+**插值余项：** 设 $f^{(n)}(x)$ 在 $[a, b]$ 连续, $f^{(n+1)}(x)$ 在 $(a, b)$ 存在, 则对 $\forall x \in[a, b]$,
+$$
+R_n(x)=f(x)-L_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1) !} \Pi_{j=0}^n\left(x-x_j\right) \\
+$$
+证明提示: $R_n(x)$ 有 $\mathrm{n}+1$ 个零点; 因此
+$$
+R_n(x)=K(x) * \prod_{j=0}^n\left(x-x_j\right)
+$$
+则只需确定 $K(x)$. 为利用Rolle定理, 做辅助函数
+$$
+\varphi(t)=f(t)-L_n(t)-K(x) * \Pi_{j=0}^n\left(t-x_j\right)
+$$
+观察上式, 除 $(\mathrm{n}+1)$ 个揷值节点, $\mathrm{t}=\mathrm{x}$ 也是 $\varphi(t)$ 的零点。因为 $\varphi(x)$ 有至少 $\mathrm{n}$ $+2$ 个零点, 由Rolle 定理知道 $\exists \xi \in(a, b)$, s.t., $\varphi^{(n+1)}(\xi)=0$, 即得结论:
+>Note: 即使被插值函数本⾝是次数不超过n的多项式，余项依旧是如上式特征。
+
 #### Newton插值法
+目的： Lagrange插值新加入节点需要全部重新计算，因此需要解决加⼊⼀个新的插值节点，不改变原来计算机结果的算法， Newton法可以有效利⽤之前的结果。
+* Newton插值法是基于差商这个概念的。
+* 当插值条件有导数是 使用Hermite插值法。
+
+##### 差商的定义
+差商: 给定节点及其函数值, 记一阶差商；
+$$
+f\left[x_i, x_j\right]=\frac{f\left(x_j\right)-f\left(x_i\right)}{x_j-x_i}
+$$
+记$\mathrm{m}$ 阶差商：
+$$
+f\left[x_0, x_1, \ldots, x_m\right]=\frac{f\left[x_1, \ldots, x_m\right]-f\left[x_0, \ldots, x_{m-1}\right]}{x_m-x_0}
+$$
+规定 $f\left[x_i\right]=f\left(x_i\right)$ 为零阶差商
+
+**差商性质：**
+函数 $f(x)$ 的n阶差商可由函数值的线性组合表示,
+$$
+f\left[x_0, x_1, \ldots, x_n\right]=\sum_{k=0}^n \frac{f\left(x_k\right)}{\prod_{j=0, j \neq k}^n\left(x_k-x_j\right)}
+$$
+
+函数 $f(x)$ 的 $\mathrm{n}$ 阶差商可由函数值的线性组合表示,
+$$
+f\left[x_0, x_1, \ldots, x_n\right]=\sum_{k=0}^n \frac{f\left(x_k\right)}{\prod_{j=0, j \neq k}^n\left(x_k-x_j\right)}
+$$
+
+>Note: 验证当 $n=1$ 时, 结论正确。即
+$$
+f\left[x_0, x_1\right]=f\left(x_0\right) /\left(x_0-x_1\right)+f\left(x_1\right) /\left(x_1-x_0\right)=\frac{f\left(x_1\right)-f\left(x_0\right)}{x_1-x_0}
+$$
+
+#### Aitken逐次线性插值法
 #### Hermite插值法
 #### 三次样条插值法
 ### 逼近方法：
@@ -152,18 +281,26 @@ f(x) &=f(b)+f^{\prime}(b)(x-b)+f^{\prime \prime}\left(\xi_2\right)(x-b)^2 \\
 E_T &=\int_a^b \frac{1}{2}\left[f^{\prime}(a)(x-a)+f^{\prime}(b)(x-b)+f^{\prime \prime}\left(\xi_1\right)(x-a)^2+f^{\prime \prime}\left(\xi_2\right)(x-b)^2\right] d s \\
 &=\frac{1}{2}\left[\left(f^{\prime}(a)-f^{\prime}(b)\right) \frac{(b-a)^2}{2}+\mathrm{(f^{\prime\prime}(\xi_1) - f^{\prime\prime}(\xi_2))} * \frac{(b-a)^3}{3}\right] \\
 &=\mathrm{( (f^{\prime\prime}(\xi_1) - f^{\prime\prime}(\xi_2)) -  f^{\prime\prime}(\xi_3) )} * \frac{(b-a)^3}{-12}\\
-&= -\frac{f^{\prime \prime}(\eta)}{12}(b-a)^3 \\
+&= -\mathrm{C}(b-a)^3 \\
 \end{aligned}\\
 $$
 > Note: 
-> * $\mathrm{C}_2$ 与二阶导数相关。
+> * $\mathrm{C}$ 与二阶导数相关。
+>* 数值积分的效果与被积函数的光滑度和积分区间有关
+>* ⾼阶导数越⼩，积分区间越⼩，效果越好
+
 
 #### Newton−Cotes公式：
 
+#### Gauss−Legendre公式：
+寻找⽐梯形公式更好的公式：Simpson、Gauss
 
 #### 复化求积法：
+根据积分区间可加性，将⼤区间积分分割成⼩区间：复化求积公式
+
 #### Richardson外推加速法：
-#### Gauss−Legendre公式：
+
+
 #### 数值微分常用方法:
 
 ## 4. (非线性) 方程求根：
@@ -292,6 +429,8 @@ $$
 对于一阶微分方程的初值问题: $\mathrm{y}^{\prime}=\mathrm{f}(\mathrm{x}, \mathrm{y}), \mathrm{y}\left(\mathrm{x}_0\right)=\mathrm{y}_0$ ，若函数 $\mathrm{f}(\mathrm{x}, \mathrm{y})$ 满足: $\left|\mathrm{f}\left(\mathrm{x}, \mathrm{y}_1\right)-\mathrm{f}\left(\mathrm{x}, \mathrm{y}_2\right)\right| \leq \mathrm{L}\left|\mathrm{y}_1-\mathrm{y}_2\right|$ 的Lipschitz条件， 则该问题存在唯一解 $\mathrm{y}=\mathrm{y}(\mathrm{x})$
 
 #### Euler解法：
+详细参考[深入理解欧拉方法](https://zhuanlan.zhihu.com/p/568552092)
+
 #### Taylor解法：
 #### Runge−Kutta解法：
 #### Adams解法：
